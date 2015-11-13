@@ -36,4 +36,16 @@ public class Enemy : MonoBehaviour
 			yield return new WaitForSeconds (spaceship.shotDelay);
 		}
 	}
+	
+	void OnTriggerEnter2D(Collider2D c){
+		string layerName = LayerMask.LayerToName(c.gameObject.layer);
+
+		if(layerName == "Bullet(Player)"){
+			Destroy(c.gameObject);
+			spaceship.Explosion();
+			Destroy(gameObject);
+		}
+
+	}
+
 }
