@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
+	public int hp = 1;
+	
 	// Spaceshipコンポーネント
 	Spaceship spaceship;
 	
@@ -42,6 +44,8 @@ public class Enemy : MonoBehaviour
 		GetComponent<Rigidbody2D>().velocity = direction * spaceship.speed;
 	}
 
+
+	//collision
 	void OnTriggerEnter2D (Collider2D c)
 	{
 		// レイヤー名を取得
@@ -50,13 +54,25 @@ public class Enemy : MonoBehaviour
 		// レイヤー名がBullet (Player)以外の時は何も行わない
 		if (layerName != "Bullet (Player)") return;
 
+		Transform playerBulletTransform = c.transform.parent;
+
+		Bullet bullet = playerBulletTransform.GetComponent<Bullet>();
+
+		hp = hp - bullet.power;
+
 		// 弾の削除
 		Destroy(c.gameObject);
 
-		// 爆発
-		spaceship.Explosion ();
-		
-		// エネミーの削除
-		Destroy (gameObject);
+		if(hp <= 0){
+			// 爆発
+			spaceship.Explosion ();
+
+			// エネミーの削除
+			Destroy (gameObject);
+		}else{
+			spaceship.GetAnimator().SetTrigger("Damage");
+		}
 	}
+
+
 }
