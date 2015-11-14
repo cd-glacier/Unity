@@ -4,7 +4,9 @@ using System.Collections;
 public class Enemy : MonoBehaviour
 {
 	public int hp = 1;
-	
+
+	public int point = 100;
+		
 	// Spaceshipコンポーネント
 	Spaceship spaceship;
 	
@@ -63,7 +65,10 @@ public class Enemy : MonoBehaviour
 		// 弾の削除
 		Destroy(c.gameObject);
 
+		//dead
 		if(hp <= 0){
+			FindObjectOfType<Score>().AddPoint(point);
+
 			// 爆発
 			spaceship.Explosion ();
 
